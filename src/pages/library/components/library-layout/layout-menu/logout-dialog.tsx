@@ -1,13 +1,15 @@
 import { AlertDialog, Button } from '@radix-ui/themes'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
 import { metadata } from '#@/constants/metadata.ts'
-
-function handleClickLogout() {
-  location.assign('/logout')
-}
 
 export function LogoutDialog(props: Readonly<AlertDialog.RootProps>) {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  function handleClickLogout() {
+    navigate('/logout')
+  }
 
   return (
     <AlertDialog.Root {...props}>

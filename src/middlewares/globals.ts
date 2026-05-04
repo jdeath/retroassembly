@@ -3,7 +3,7 @@ import { accepts } from 'hono/accepts'
 import { getCookie } from 'hono/cookie'
 import { createMiddleware } from 'hono/factory'
 import { match } from 'path-to-regexp'
-import { getRunTimeEnv } from '#@/constants/env.ts'
+import { getRunTimeEnv, stripBasePath } from '#@/constants/env.ts'
 import type { ResolvedPreference } from '#@/constants/preference.ts'
 import { getPreference } from '#@/controllers/preference/get-preference.ts'
 import { getCurrentUser } from '#@/controllers/users/get-current-user.ts'
@@ -37,7 +37,7 @@ function getDetectedLanguage(c: Context) {
 function getLanguage(c: Context) {
   const { detectedLanguage, preference } = c.var
 
-  const path = c.req.path.endsWith('.data') ? c.req.path.slice(0, -5) : c.req.path
+  const path = stripBasePath(c.req.path.endsWith('.data') ? c.req.path.slice(0, -5) : c.req.path)
   const segments = path.split('/').slice(1)
   const [segment] = segments
   const isDemo = match('/demo{/*path}')(path)

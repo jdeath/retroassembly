@@ -31,6 +31,7 @@ export function getRunTimeEnv() {
         { node: `${runTimeEnv.NODE_ENV !== 'development'}`, workerd: 'false' }[runtimeKey] || 'false',
       RETROASSEMBLY_RUN_TIME_SKIP_HOME_IF_LOGGED_IN: { node: 'true', workerd: 'false' }[runtimeKey] || 'false',
       RETROASSEMBLY_RUN_TIME_STORAGE_DIRECTORY: path.resolve('data', 'storage'),
+      RETROASSEMBLY_RUN_TIME_BASE_PATH: '',
       RETROASSEMBLY_RUN_TIME_STORAGE_HOST: '',
       RETROASSEMBLY_RUN_TIME_SUPABASE_ANON_KEY: '',
       RETROASSEMBLY_RUN_TIME_SUPABASE_URL: '',
@@ -49,4 +50,12 @@ export function getDirectories() {
 export function getDatabasePath() {
   const { dataDirectory } = getDirectories()
   return path.join(dataDirectory, 'retroassembly.sqlite')
+}
+
+export function stripBasePath(urlPath: string): string {
+  const basePath = process.env.RETROASSEMBLY_RUN_TIME_BASE_PATH || ''
+  if (basePath && urlPath.startsWith(basePath)) {
+    return urlPath.slice(basePath.length) || '/'
+  }
+  return urlPath
 }

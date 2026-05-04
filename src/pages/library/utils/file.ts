@@ -47,7 +47,10 @@ export async function getROMMd5(file: File, platform: string) {
 
 export function getFileUrl(fileId: string) {
   if (fileId) {
-    return `/api/v1/files/${encodeURIComponent(fileId)}`
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const basename: string = (typeof window !== 'undefined' && (window as any).__reactRouterContext?.basename) || ''
+    const basePath = basename === '/' ? '' : basename.replace(/\/$/, '')
+    return `${basePath}/api/v1/files/${encodeURIComponent(fileId)}`
   }
   throw new Error('File ID is required to get the file URL')
 }

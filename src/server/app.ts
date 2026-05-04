@@ -7,7 +7,8 @@ import { globals } from '#@/middlewares/globals.ts'
 import { logger } from '#@/middlewares/logger.ts'
 import { vendors } from '#@/middlewares/vendors.ts'
 
-const app = new Hono()
+const basePath = process.env.RETROASSEMBLY_RUN_TIME_BASE_PATH || ''
+const app = basePath ? new Hono().basePath(basePath) : new Hono()
 app.use(contextStorage())
 app.use(vendors(), globals(), auth(), logger())
 app.route('', api)
